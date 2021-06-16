@@ -8,6 +8,9 @@ public class ConnectionDB {
 	public static final String USER = "sa";
 	public static final String PASS = "1";
 	
+	
+	public static final String dbURL = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyBanHang;integratedSecurity=true;";
+	
 	public static Connection conn = null;
 	
 	public static boolean connect() {
@@ -21,6 +24,25 @@ public class ConnectionDB {
 		
 		try {
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			System.out.println("Successfully connect to database");		
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static boolean connect_() {
+		try {
+			Class.forName(JDBC_DRIVER);
+			System.out.println("Successfully load driver!");
+		} catch (ClassNotFoundException e) {
+			System.out.println("Error: unable to load driver class.");
+			return false;
+		}
+		
+		try {
+            conn = DriverManager.getConnection(dbURL);
 			System.out.println("Successfully connect to database");		
 			return true;
 		} catch (Exception e) {
@@ -44,7 +66,7 @@ public class ConnectionDB {
 		// TODO Auto-generated method stub
 		Statement stm = null;
 		try {
-			if(ConnectionDB.connect()) {
+			if(ConnectionDB.connect_()) {
 				String sql = "SELECT * FROM SanPham WHERE MaSP >= 1 AND MaSP <= 50";
 				stm = conn.createStatement();
 				ResultSet rs = stm.executeQuery(sql);
