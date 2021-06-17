@@ -302,6 +302,7 @@ public class DSHoaDon extends JFrame {
 		contentPane.add(txtTien);
 		
 		JButton btnNewButton = new JButton("Th\u00EAm h\u00F3a \u0111\u01A1n");
+		
 		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton.setBackground(new Color(0, 191, 255));
 		btnNewButton.setForeground(Color.DARK_GRAY);
@@ -396,7 +397,7 @@ public class DSHoaDon extends JFrame {
 		APIHoaDon query = new APIHoaDon();
 		query.GetAll();
 		
-		
+		System.out.println("So luong:" + query.list_hd.size());
 		
 		
 		
@@ -532,6 +533,16 @@ public class DSHoaDon extends JFrame {
 				txtNgay.setText(ngaylap);
 				txtTien.setText(tongtien);
 				
+			}
+		});
+		
+		// Them hoa don
+		
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DSHoaDon.this.dispose();
+				ThemHoaDon hd = new ThemHoaDon();
+				hd.setVisible(true);
 			}
 		});
 	}

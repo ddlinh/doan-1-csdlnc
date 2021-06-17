@@ -141,5 +141,22 @@ public class APIHoaDon {
 	}
 	
 	
+	public void ThemHD(int MaKH, String Ngay, int TongTien) {
+		Statement stm = null;
+		this.GetAll();
+		int MaHD = 1 + this.list_hd.size();
+		try {
+			if(ConnectionDB.connect_() && MaKH > 0) {
+				String sql = "INSERT INTO HoaDon VALUES (" + MaHD + ", " + MaKH + ", '" + Ngay + "', " + TongTien + ")";
+				stm = ConnectionDB.conn.createStatement();
+				stm.executeUpdate(sql);
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 
 }
