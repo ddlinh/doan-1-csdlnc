@@ -9,6 +9,8 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.Color;
@@ -48,8 +50,14 @@ public class DSHoaDon extends JFrame {
 	private JTextField ErrorMKH;
 	private JTextField ErrorTG;
 	private JTextField ErrorTongTien;
+	private JTextField txtTrang;
 	
 	
+	public int SoTrang;
+	public int TrangHienTai;
+	public APIHoaDon query = new APIHoaDon();
+	public boolean isSearch = false;
+	public boolean sodu = false;
 	/**
 	 * Launch the application.
 	 */
@@ -165,22 +173,26 @@ public class DSHoaDon extends JFrame {
 			NgayKT = dateFormat.format(txtNgayKT.getDate());
 		}
 		
-		APIHoaDon query = new APIHoaDon();
+		
 		if(MaHD > 0 && NgayBD.length() > 0 && NgayKT.length() > 0) {
 			query.TimKiemTheoMaKH_Ngay(MaHD, NgayBD, NgayKT);
+			isSearch = true;
 			check = true;
 		}
 		else {
 			if(MaHD > 0) {
 				query.TimKiemTheoMaKH(MaHD);
 				check = true;
+				isSearch = true;
 			}
 			else {
 				if(NgayBD.length() > 0 && NgayKT.length() > 0) {
 					query.TimKiemTheoNgay(NgayBD, NgayKT);
 					check = true;
+					isSearch = true;
 				}
 				else {
+					isSearch = false;
 					query.GetAll();
 				}
 			}
@@ -192,8 +204,13 @@ public class DSHoaDon extends JFrame {
 		String[] title = {"MaHD","MaKH","NgayLap","TongTien"};
 		
 		if(check) {
-			String[][] data = new String[query.list_result.size()][4];
-			for(int i = 0; i < query.list_result.size(); i++) {
+			this.SoTrang = query.list_result.size() / 20;
+			if(query.list_result.size() % 20 > 0) {
+				sodu = true;
+			}
+			this.TrangHienTai = 1;
+			String[][] data = new String[20][4];
+			for(int i = 0; i < 20; i++) {
 				data[i][0] = ""+query.list_result.get(i).MaHD;
 				data[i][1] = ""+query.list_result.get(i).MaKH;
 				data[i][2] = ""+query.list_result.get(i).NgayLap;
@@ -204,11 +221,15 @@ public class DSHoaDon extends JFrame {
 			
 			
 			
-			
 			DefaultTableModel model = new DefaultTableModel(data, title);
 			table.setModel(model);
 		}
 		else {
+			this.SoTrang = query.list_hd.size() / 20;
+			if(query.list_hd.size() % 20 > 0) {
+				sodu = true;
+			}
+			this.TrangHienTai = 1;
 			String[][] data = new String[20][4];
 			for(int i = 0; i < 20; i++) {
 				data[i][0] = ""+query.list_hd.get(i).MaHD;
@@ -227,7 +248,7 @@ public class DSHoaDon extends JFrame {
 		
 		
 		
-		
+		txtTrang.setText("1");
 		searchMaKH.setText("");
 		searchNgayBD.setDate(null);
 		txtNgayKT.setDate(null);
@@ -235,12 +256,84 @@ public class DSHoaDon extends JFrame {
 		
 	}
 
+	
+	public void Load_Trang(int SoTrang) {
+		table.removeAll();
+		String[] title = {"MaHD","MaKH","NgayLap","TongTien"};
+		if(this.isSearch) {
+			String[][] data = null;
+			this.TrangHienTai = SoTrang;
+			txtTrang.setText("" + this.TrangHienTai);
+			if(this.TrangHienTai < this.SoTrang) {
+				data = new String[20][4];
+				System.out.println(this.TrangHienTai*20 + 20);
+				int k = 0;
+				for(int i = (this.TrangHienTai-1)*20; i < (this.TrangHienTai-1)*20 + 20; i++) {
+					data[k][0] = ""+query.list_result.get(i).MaHD;
+					data[k][1] = ""+query.list_result.get(i).MaKH;
+					data[k][2] = ""+query.list_result.get(i).NgayLap;
+					data[k][3] = ""+query.list_result.get(i).TongTien;
+					k += 1;
+				}
+			}
+			else {
+				data = new String[query.list_result.size()-this.TrangHienTai*20][4];
+				int k = 0;
+				for(int i = (this.TrangHienTai)*20; i < query.list_result.size(); i++) {
+					data[k][0] = ""+query.list_result.get(i).MaHD;
+					data[k][1] = ""+query.list_result.get(i).MaKH;
+					data[k][2] = ""+query.list_result.get(i).NgayLap;
+					data[k][3] = ""+query.list_result.get(i).TongTien;
+					k+=1;
+				}
+			}
+			DefaultTableModel model = new DefaultTableModel(data, title);
+			table.setModel(model);
+		}
+		else {
+			String[][] data = null;
+			this.TrangHienTai = SoTrang;
+			txtTrang.setText("" + this.TrangHienTai);
+			if(this.TrangHienTai < this.SoTrang) {
+				data = new String[20][4];
+				int k = 0;
+				for(int i = (this.TrangHienTai-1)*20; i < (this.TrangHienTai-1)*20 + 20; i++) {
+					
+					data[k][0] = ""+query.list_hd.get(i).MaHD;
+					data[k][1] = ""+query.list_hd.get(i).MaKH;
+					data[k][2] = ""+query.list_hd.get(i).NgayLap;
+					data[k][3] = ""+query.list_hd.get(i).TongTien;
+					k += 1;
+					
+				}
+				
+			}
+			else {
+			
+				data = new String[query.list_hd.size()-this.TrangHienTai*20][4];
+				int k = 0;
+				for(int i = (this.TrangHienTai)*20; i < query.list_hd.size(); i++) {
+					data[k][0] = ""+query.list_hd.get(i).MaHD;
+					data[k][1] = ""+query.list_hd.get(i).MaKH;
+					data[k][2] = ""+query.list_hd.get(i).NgayLap;
+					data[k][3] = ""+query.list_hd.get(i).TongTien;
+					k += 1;
+				}
+				
+			}
+			DefaultTableModel model = new DefaultTableModel(data, title);
+			table.setModel(model);
+		}
+	}
+	
+	
+	
 	/**
 	 * Create the frame.
 	 */
 	public DSHoaDon() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 786, 829);
+		setBounds(100, 100, 786, 853);
 		contentPane = new JPanel();
 		contentPane.setEnabled(false);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -318,6 +411,7 @@ public class DSHoaDon extends JFrame {
 		contentPane.add(btnChnhSa);
 		
 		JButton btnXa = new JButton("X\u00F3a");
+		
 		btnXa.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnXa.setForeground(Color.DARK_GRAY);
 		btnXa.setBackground(new Color(250, 128, 114));
@@ -394,7 +488,6 @@ public class DSHoaDon extends JFrame {
 		
 		
 		table = new JTable();
-		APIHoaDon query = new APIHoaDon();
 		query.GetAll();
 		
 		System.out.println("So luong:" + query.list_hd.size());
@@ -403,11 +496,14 @@ public class DSHoaDon extends JFrame {
 		
 		
 		String[][] data = new String[20][4];
+		this.TrangHienTai = 1;
+		this.SoTrang = query.list_hd.size()/20;
 		for(int i = 0; i < 20; i++) {
 			data[i][0] = ""+query.list_hd.get(i).MaHD;
 			data[i][1] = ""+query.list_hd.get(i).MaKH;
 			data[i][2] = ""+query.list_hd.get(i).NgayLap;
 			data[i][3] = ""+query.list_hd.get(i).TongTien;
+			
 			
 			
 		}
@@ -428,7 +524,7 @@ public class DSHoaDon extends JFrame {
 		contentPane.add(txtNgay);
 		
 		
-		// Event
+		// Event tim kiem
 		
 		btnHinTh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -444,6 +540,7 @@ public class DSHoaDon extends JFrame {
 		txtTien.setEnabled(false);
 		
 		ErrorMHD = new JTextField();
+		ErrorMHD.setEnabled(false);
 		ErrorMHD.setBackground(UIManager.getColor("Button.background"));
 		ErrorMHD.setBorder(null);
 		ErrorMHD.setBounds(205, 91, 96, 19);
@@ -474,6 +571,30 @@ public class DSHoaDon extends JFrame {
 		ErrorTongTien.setBounds(542, 153, 96, 19);
 		contentPane.add(ErrorTongTien);
 		
+		JButton btnNewButton_1 = new JButton("<");
+		
+		btnNewButton_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_1.setBounds(89, 759, 47, 21);
+		contentPane.add(btnNewButton_1);
+		
+		JButton btnNewButton_1_1 = new JButton(">");
+		
+		btnNewButton_1_1.setBounds(254, 759, 47, 21);
+		contentPane.add(btnNewButton_1_1);
+		
+		txtTrang = new JTextField();
+		txtTrang.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTrang.setBounds(137, 759, 47, 19);
+		contentPane.add(txtTrang);
+		txtTrang.setColumns(10);
+		
+		JButton btnNewButton_1_1_1 = new JButton("Ti\u1EBFn");
+		
+		btnNewButton_1_1_1.setBounds(183, 759, 70, 21);
+		contentPane.add(btnNewButton_1_1_1);
+		
+		
+		txtTrang.setText("1");
 		// Chinh sua
 		btnChnhSa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -507,7 +628,6 @@ public class DSHoaDon extends JFrame {
 		btnLu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(check_form()) {
-					APIHoaDon query = new APIHoaDon();
 					int MaHD = Integer.parseInt(txtMHD.getText());
 					int MaKH = Integer.parseInt(txtMKH.getText());
 					int TongTien = Integer.parseInt(txtTien.getText());
@@ -545,5 +665,80 @@ public class DSHoaDon extends JFrame {
 				hd.setVisible(true);
 			}
 		});
+		
+		
+		// Xoa hoa don
+		
+		btnXa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(txtMHD.getText().length() < 1) {
+					JOptionPane.showMessageDialog(DSHoaDon.this,
+						    "Ban chua chon doi tuong",
+						    "Thong bao",
+						    JOptionPane.PLAIN_MESSAGE);
+				}
+				else {
+					int MaHD = Integer.parseInt(txtMHD.getText());
+					query.Delete(MaHD);
+					JOptionPane.showMessageDialog(DSHoaDon.this,
+						    "Xoa thanh cong",
+						    "Thong bao",
+						    JOptionPane.PLAIN_MESSAGE);
+					LoadData();
+				}
+			}
+		});
+		
+		
+		// Lui
+		
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(txtTrang.getText().length() > 0 && check_nb(txtTrang.getText())) {
+					int soTrang = Integer.parseInt(txtTrang.getText());
+					soTrang -= 1;
+					if(soTrang >= 1) {
+						Load_Trang(soTrang);
+					}
+				}
+			}
+		});
+		
+		// Tien
+		
+		btnNewButton_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(txtTrang.getText().length() > 0 && check_nb(txtTrang.getText())) {
+					
+					int soTrang = Integer.parseInt(txtTrang.getText());
+					soTrang += 1;
+					if(soTrang < SoTrang) {
+						
+						Load_Trang(soTrang);
+					}
+				}
+			}
+		});
+		
+		
+		// Toi so trang can tien
+		
+		btnNewButton_1_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(txtTrang.getText().length() > 0 && check_nb(txtTrang.getText())) {
+					int soTrang = Integer.parseInt(txtTrang.getText());
+					if(soTrang <= SoTrang && soTrang >= 1) {
+						Load_Trang(soTrang);
+					}
+					else {
+						JOptionPane.showMessageDialog(DSHoaDon.this,
+							    "So trang toi thieu la 1 va toi da la: " + SoTrang,
+							    "Thong bao",
+							    JOptionPane.PLAIN_MESSAGE);
+					}
+				}
+			}
+		});
+		
 	}
 }

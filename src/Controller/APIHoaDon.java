@@ -5,6 +5,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import DAO.ConnectionDB;
+import Model.ChiTietHoaDon;
 import Model.HoaDon;
 
 public class APIHoaDon {
@@ -125,7 +126,24 @@ public class APIHoaDon {
 		}
 	}
 	
+	public void Delete_CTHD(int MaHD) {
+		Statement stm = null;
+		
+		try {
+			if(ConnectionDB.connect_() && MaHD > 0) {
+				String sql = "DELETE FROM CT_HoaDon Where MaHD = " + MaHD;
+				stm = ConnectionDB.conn.createStatement();
+				stm.executeUpdate(sql);
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void Delete(int MaHD) {
+		
+		this.Delete_CTHD(MaHD);
 		Statement stm = null;
 		
 		try {
@@ -141,16 +159,27 @@ public class APIHoaDon {
 	}
 	
 	
-	public void ThemHD(int MaKH, String Ngay, int TongTien) {
+	public void ThemHD(int MaKH, String Ngay, int TongTien, ArrayList<ChiTietHoaDon> list_cthd) {
 		Statement stm = null;
 		this.GetAll();
 		int MaHD = 1 + this.list_hd.size();
+		boolean check_listSP = false;
+		if(list_cthd.size() > 0) {
+			check_listSP = true;
+			for(int i = 0; i < list_cthd.size(); i++) {
+				list_cthd.get(i).setMaHD(MaHD);
+			}
+		}
 		try {
 			if(ConnectionDB.connect_() && MaKH > 0) {
 				String sql = "INSERT INTO HoaDon VALUES (" + MaHD + ", " + MaKH + ", '" + Ngay + "', " + TongTien + ")";
 				stm = ConnectionDB.conn.createStatement();
 				stm.executeUpdate(sql);
 				}
+			for(int i = 0; i < list_cthd.size(); i++) {
+				APIChiTietHoaDon cthd = new APIChiTietHoaDon();
+				cthd.ThemChiTietHoaDon(list_cthd.get(i));
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
