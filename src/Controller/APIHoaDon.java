@@ -18,7 +18,7 @@ public class APIHoaDon {
 		Statement stm = null;
 		list_hd.clear();
 		try {
-			if(ConnectionDB.connect_()) {
+			if(ConnectionDB.connect()) {
 				String sql = "SELECT * FROM HoaDon";
 				stm = ConnectionDB.conn.createStatement();
 				ResultSet rs = stm.executeQuery(sql);

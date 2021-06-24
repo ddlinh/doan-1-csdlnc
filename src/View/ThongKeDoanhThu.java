@@ -176,6 +176,7 @@ public class ThongKeDoanhThu extends JFrame {
 		statisticScroll.setLocation(5, 205);
 		statisticScroll.setSize(1180, 495);
 		statisticScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		statisticScroll.getVerticalScrollBar().setUnitIncrement(10);
 		contentPane.add(statisticScroll);
 		
 		JButton viewButton = new JButton("Xem");
@@ -208,7 +209,7 @@ public class ThongKeDoanhThu extends JFrame {
 					Statement stm_doanh_thu = null;
 					
 					String start_date = month_from + "/1/" + year_from;
-					
+					String real_end_time = month_to + "/" + year_to;
 					if(month_to_int == 12) {
 						year_to_int += 1;
 						month_to_int = 1;
@@ -242,7 +243,7 @@ public class ThongKeDoanhThu extends JFrame {
 					statisticPanel.revalidate();
 					statisticPanel.repaint();
 					JFreeChart chart = ChartFactory.createLineChart(
-							"Doanh thu theo th\u00E1ng giai \u0111o\u1EA1n t\u1EEB " + month_from + "/" + year_from + " \u0111\u1EBFn " + month_to + "/" + year_to, 
+							"Doanh thu theo th\u00E1ng giai \u0111o\u1EA1n t\u1EEB " + month_from + "/" + year_from + " \u0111\u1EBFn " + real_end_time, 
 							"Th\u1EDDi gian (th\u00E1ng/n\u0103m)",
 							"Doanh thu (VND)", 
 							createDataset_DoanhThu(time_list, money_list),
@@ -326,6 +327,17 @@ public class ThongKeDoanhThu extends JFrame {
 		});
 		
 		contentPane.add(viewButton);
+		
+		JButton btnQuayLi = new JButton("Quay lại");
+		btnQuayLi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane.setVisible(false);
+			}
+		});
+		btnQuayLi.setFont(new Font("Tahoma", Font.BOLD, 18));
+		btnQuayLi.setBackground(new Color(233, 150, 122));
+		btnQuayLi.setBounds(800, 125, 150, 40);
+		contentPane.add(btnQuayLi);
 			
 		}
 		
