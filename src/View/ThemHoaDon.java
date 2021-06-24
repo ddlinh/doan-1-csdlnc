@@ -345,23 +345,32 @@ public class ThemHoaDon extends JFrame {
 		
 		btnThmMi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(check_form()) {
-					int MaKH = Integer.parseInt(txtMaKH.getText());
-					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-					String Ngay = dateFormat.format(txtThoiGian.getDate());
-					
-					APIHoaDon query = new APIHoaDon();
-					query.ThemHD(MaKH, Ngay, list_cthd);
-					
+				if(list_cthd.size() > 0) {
+					if(check_form()) {
+						int MaKH = Integer.parseInt(txtMaKH.getText());
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+						String Ngay = dateFormat.format(txtThoiGian.getDate());
+						
+						APIHoaDon query = new APIHoaDon();
+						query.ThemHD(MaKH, Ngay, list_cthd);
+						
+						JOptionPane.showMessageDialog(ThemHoaDon.this,
+							    "Them moi du lieu thanh cong",
+							    "Thong bao",
+							    JOptionPane.PLAIN_MESSAGE);
+						
+						txtMaKH.setText("");
+						txtThoiGian.setDate(null);
+						
+					}
+				}
+				else {
 					JOptionPane.showMessageDialog(ThemHoaDon.this,
-						    "Them moi du lieu thanh cong",
+						    "Ban chua them san pham nao trong hoa don",
 						    "Thong bao",
 						    JOptionPane.PLAIN_MESSAGE);
-					
-					txtMaKH.setText("");
-					txtThoiGian.setDate(null);
-					
 				}
+				
 			}
 		});
 		
