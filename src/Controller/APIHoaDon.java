@@ -159,20 +159,22 @@ public class APIHoaDon {
 	}
 	
 	
-	public void ThemHD(int MaKH, String Ngay, int TongTien, ArrayList<ChiTietHoaDon> list_cthd) {
+	public void ThemHD(int MaKH, String Ngay, ArrayList<ChiTietHoaDon> list_cthd) {
 		Statement stm = null;
 		this.GetAll();
 		int MaHD = 1 + this.list_hd.size();
 		boolean check_listSP = false;
+		int _TongTien = 0;
 		if(list_cthd.size() > 0) {
 			check_listSP = true;
 			for(int i = 0; i < list_cthd.size(); i++) {
 				list_cthd.get(i).setMaHD(MaHD);
+				_TongTien += list_cthd.get(i).ThanhTien;
 			}
 		}
 		try {
 			if(ConnectionDB.connect_() && MaKH > 0) {
-				String sql = "INSERT INTO HoaDon VALUES (" + MaHD + ", " + MaKH + ", '" + Ngay + "', " + TongTien + ")";
+				String sql = "INSERT INTO HoaDon VALUES (" + MaHD + ", " + MaKH + ", '" + Ngay + "', " + _TongTien + ")";
 				stm = ConnectionDB.conn.createStatement();
 				stm.executeUpdate(sql);
 				}

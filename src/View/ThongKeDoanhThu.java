@@ -1,6 +1,8 @@
 package View;
 
 import java.awt.BorderLayout;
+import org.apache.commons.lang.StringEscapeUtils;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -16,6 +18,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -189,11 +194,11 @@ public class ThongKeDoanhThu extends JFrame {
 				int month_from_int = Integer.parseInt(month_from);
 				String month_to = monthToComboBox.getSelectedItem().toString();
 				int month_to_int = Integer.parseInt(month_to);
-				
+								
 				if (year_from_int > year_to_int) {
-					JOptionPane.showMessageDialog(contentPane, "Vui lòng chọn năm bắt đầu trước năm kết thúc");
+					JOptionPane.showMessageDialog(contentPane, "Vui l\u00F2ng ch\u1ECDn n\u0103m b\u1EAFt \u0111\u1EA7u tr\u01B0\u1EDBc n\u0103m k\u1EBFt th\u00FAc");
 				} else if (year_from_int == year_to_int && month_from_int > month_to_int) {
-						JOptionPane.showMessageDialog(contentPane, "Vui lòng chọn tháng bắt đầu trước tháng kết thúc");
+					JOptionPane.showMessageDialog(contentPane, StringEscapeUtils.escapeJava("Vui l\u00F2ng ch\u1ECDn th\u00E1ng b\u1EAFt \u0111\u1EA7u tr\u01B0\u1EDBc th\u00E1ng k\u1EBFt th\u00FAc"));
 				}
 				else {
 					ArrayList<String> time_list = new ArrayList<String>();
@@ -237,8 +242,8 @@ public class ThongKeDoanhThu extends JFrame {
 					statisticPanel.revalidate();
 					statisticPanel.repaint();
 					JFreeChart chart = ChartFactory.createLineChart(
-							"Doanh thu theo tháng giai đoạn từ " + month_from + "/" + year_from + " đến " + month_to + "/" + year_to, 
-							"Thời gian (tháng/năm)",
+							"Doanh thu theo th\u00E1ng giai \u0111o\u1EA1n t\u1EEB " + month_from + "/" + year_from + " \u0111\u1EBFn " + month_to + "/" + year_to, 
+							"Th\u1EDDi gian (th\u00E1ng/n\u0103m)",
 							"Doanh thu (VND)", 
 							createDataset_DoanhThu(time_list, money_list),
 							PlotOrientation.VERTICAL,
@@ -276,7 +281,7 @@ public class ThongKeDoanhThu extends JFrame {
 					piePanel.repaint();
 					
 					JFreeChart bestSellers = ChartFactory.createPieChart(      
-					         "TOP 3 SẢN PHẨM BÁN CHẠY NHẤT",   
+					         "TOP 3 S\u1EA2N PH\u1EA8M B\u00C1N CH\u1EA0Y NH\u1EA4T",   
 					         createDataset(product_best_seller, numbers),    
 					         true, 
 					         true, 
@@ -305,7 +310,7 @@ public class ThongKeDoanhThu extends JFrame {
 					}
 					
 					JFreeChart bestMoney = ChartFactory.createPieChart(      
-					         "TOP 3 SẢN PHẨM CÓ DOANH THU CAO NHẤT",   
+					         "TOP 3 S\u1EA2N PH\u1EA8M C\u00D3 DOANH THU CAO NH\u1EA4T",   
 					         createDataset_2(product_best_money, best_money),    
 					         true, 
 					         true, 
@@ -321,7 +326,7 @@ public class ThongKeDoanhThu extends JFrame {
 		});
 		
 		contentPane.add(viewButton);
-					
+			
 		}
 		
 	   private static PieDataset createDataset(ArrayList<String> products, ArrayList<Integer> numbers) {

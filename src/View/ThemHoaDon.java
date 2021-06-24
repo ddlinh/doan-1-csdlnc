@@ -39,10 +39,8 @@ public class ThemHoaDon extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtMaKH;
-	private JTextField txtTongTien;
 	private JDateChooser txtThoiGian;
 	private JTextField ErrorMaKH;
-	private JTextField ErrorTongTien;
 	private JTextField ErrorThoiGian;
 	
 	public int IndexSP = -1;
@@ -129,18 +127,6 @@ public class ThemHoaDon extends JFrame {
 			}
 		}
 		
-		if(txtTongTien.getText().length() < 0){
-			ErrorTongTien.setText("Tong tien rong");
-		}
-		else {
-			if(!check_nb(txtTongTien.getText())) {
-				ErrorTongTien.setText("Tien phai la so");
-			}
-			else {
-				ErrorTongTien.setText("");
-				count += 1;
-			}
-		}
 		
 		if(txtThoiGian.getDate() == null) {
 			ErrorThoiGian.setText("Ban chua chon thoi gian");
@@ -150,7 +136,7 @@ public class ThemHoaDon extends JFrame {
 			count += 1;
 		}
 		
-		if(count < 3)
+		if(count < 2)
 		{
 			return false;
 		}
@@ -252,25 +238,14 @@ public class ThemHoaDon extends JFrame {
 		contentPane.add(txtMaKH);
 		txtMaKH.setColumns(10);
 		
-		JLabel lblNewLabel_2_6_1 = new JLabel("T\u1ED5ng ti\u1EC1n:");
-		lblNewLabel_2_6_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2_6_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblNewLabel_2_6_1.setBounds(86, 268, 90, 13);
-		contentPane.add(lblNewLabel_2_6_1);
-		
-		txtTongTien = new JTextField();
-		txtTongTien.setColumns(10);
-		txtTongTien.setBounds(190, 266, 111, 19);
-		contentPane.add(txtTongTien);
-		
 		JLabel lblNewLabel_2_6_2 = new JLabel("Th\u1EDDi gian:");
 		lblNewLabel_2_6_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2_6_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblNewLabel_2_6_2.setBounds(100, 323, 76, 13);
+		lblNewLabel_2_6_2.setBounds(100, 268, 76, 13);
 		contentPane.add(lblNewLabel_2_6_2);
 		
 		txtThoiGian = new JDateChooser();
-		txtThoiGian.setBounds(190, 317, 108, 19);
+		txtThoiGian.setBounds(190, 268, 108, 19);
 		contentPane.add(txtThoiGian);
 		
 		ErrorMaKH = new JTextField();
@@ -281,20 +256,12 @@ public class ThemHoaDon extends JFrame {
 		ErrorMaKH.setBounds(190, 240, 107, 19);
 		contentPane.add(ErrorMaKH);
 		
-		ErrorTongTien = new JTextField();
-		ErrorTongTien.setEnabled(false);
-		ErrorTongTien.setColumns(10);
-		ErrorTongTien.setBorder(null);
-		ErrorTongTien.setBackground(new Color(255, 255, 224));
-		ErrorTongTien.setBounds(194, 295, 107, 19);
-		contentPane.add(ErrorTongTien);
-		
 		ErrorThoiGian = new JTextField();
 		ErrorThoiGian.setEnabled(false);
 		ErrorThoiGian.setColumns(10);
 		ErrorThoiGian.setBorder(null);
 		ErrorThoiGian.setBackground(new Color(255, 255, 224));
-		ErrorThoiGian.setBounds(190, 346, 107, 19);
+		ErrorThoiGian.setBounds(190, 297, 107, 19);
 		contentPane.add(ErrorThoiGian);
 		
 		JButton btnNewButton = new JButton("H\u1EE7y");
@@ -352,7 +319,7 @@ public class ThemHoaDon extends JFrame {
 		
 		btnNewButton_1_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton_1_1.setBackground(new Color(176, 196, 222));
-		btnNewButton_1_1.setBounds(597, 351, 138, 21);
+		btnNewButton_1_1.setBounds(597, 314, 138, 21);
 		contentPane.add(btnNewButton_1_1);
 		
 		JButton btnNewButton_2 = new JButton("X\u00F3a s\u1EA3n ph\u1EA9m");
@@ -369,7 +336,6 @@ public class ThemHoaDon extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				txtMaKH.setText("");
-				txtTongTien.setText("");
 				txtThoiGian.setDate(null);
 			}
 		});
@@ -381,12 +347,11 @@ public class ThemHoaDon extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(check_form()) {
 					int MaKH = Integer.parseInt(txtMaKH.getText());
-					int TongTien = Integer.parseInt(txtTongTien.getText());
 					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 					String Ngay = dateFormat.format(txtThoiGian.getDate());
 					
 					APIHoaDon query = new APIHoaDon();
-					query.ThemHD(MaKH, Ngay, TongTien, list_cthd);
+					query.ThemHD(MaKH, Ngay, list_cthd);
 					
 					JOptionPane.showMessageDialog(ThemHoaDon.this,
 						    "Them moi du lieu thanh cong",
@@ -394,7 +359,6 @@ public class ThemHoaDon extends JFrame {
 						    JOptionPane.PLAIN_MESSAGE);
 					
 					txtMaKH.setText("");
-					txtTongTien.setText("");
 					txtThoiGian.setDate(null);
 					
 				}

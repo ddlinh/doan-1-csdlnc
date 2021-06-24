@@ -478,6 +478,15 @@ public class DSHoaDon extends JFrame {
 		btnThngKDoanh.setForeground(new Color(250, 240, 230));
 		btnThngKDoanh.setBackground(new Color(112, 128, 144));
 		btnThngKDoanh.setBounds(554, 414, 148, 30);
+		
+		btnThngKDoanh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				ThongKeDoanhThu t = new ThongKeDoanhThu();
+				t.setVisible(true);
+			}
+		});
+		
 		contentPane.add(btnThngKDoanh);
 		
 		
