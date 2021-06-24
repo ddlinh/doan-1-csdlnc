@@ -209,20 +209,33 @@ public class DSHoaDon extends JFrame {
 				sodu = true;
 			}
 			this.TrangHienTai = 1;
-			String[][] data = new String[20][4];
-			for(int i = 0; i < 20; i++) {
-				data[i][0] = ""+query.list_result.get(i).MaHD;
-				data[i][1] = ""+query.list_result.get(i).MaKH;
-				data[i][2] = ""+query.list_result.get(i).NgayLap;
-				data[i][3] = ""+query.list_result.get(i).TongTien;
-				
-				
+			if(this.SoTrang >= 1) {
+				String[][] data = new String[20][4];
+				for(int i = 0; i < 20; i++) {
+					data[i][0] = ""+query.list_result.get(i).MaHD;
+					data[i][1] = ""+query.list_result.get(i).MaKH;
+					data[i][2] = ""+query.list_result.get(i).NgayLap;
+					data[i][3] = ""+query.list_result.get(i).TongTien;
+					
+					DefaultTableModel model = new DefaultTableModel(data, title);
+					table.setModel(model);
+				}
+			}else {
+				String[][] data = new String[query.list_result.size()][4];
+				for(int i = 0; i < query.list_result.size(); i++) {
+					data[i][0] = ""+query.list_result.get(i).MaHD;
+					data[i][1] = ""+query.list_result.get(i).MaKH;
+					data[i][2] = ""+query.list_result.get(i).NgayLap;
+					data[i][3] = ""+query.list_result.get(i).TongTien;
+					
+					
+				}
+				DefaultTableModel model = new DefaultTableModel(data, title);
+				table.setModel(model);
 			}
 			
 			
 			
-			DefaultTableModel model = new DefaultTableModel(data, title);
-			table.setModel(model);
 		}
 		else {
 			this.SoTrang = query.list_hd.size() / 20;

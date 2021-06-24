@@ -113,22 +113,36 @@ public class ThemCTHD extends JFrame {
 		if(check) {
 			this.SoTrang = query.list_result.size() / 20;
 			this.TrangHienTai = 1;
-			String[][] data = new String[20][5];
-			for(int i = 0; i < 20; i++) {
-				data[i][0] = ""+query.list_result.get(i).MaSP;
-				data[i][1] = ""+query.list_result.get(i).TenSP;
-				data[i][2] = ""+query.list_result.get(i).SoLuongTon;
-				data[i][3] = ""+query.list_result.get(i).MoTa;
-				data[i][4] = ""+query.list_result.get(i).Gia;
+			if(this.SoTrang >= 1) {
+				String[][] data = new String[20][5];
+				for(int i = 0; i < 20; i++) {
+					data[i][0] = ""+query.list_result.get(i).MaSP;
+					data[i][1] = ""+query.list_result.get(i).TenSP;
+					data[i][2] = ""+query.list_result.get(i).SoLuongTon;
+					data[i][3] = ""+query.list_result.get(i).MoTa;
+					data[i][4] = ""+query.list_result.get(i).Gia;
+					
+					
+				}
 				
-				
+				DefaultTableModel model = new DefaultTableModel(data, title);
+				table_sp.setModel(model);
 			}
-			
-			
-			
-			
-			DefaultTableModel model = new DefaultTableModel(data, title);
-			table_sp.setModel(model);
+			else {
+				String[][] data = new String[query.list_result.size()][5];
+				for(int i = 0; i < query.list_result.size(); i++) {
+					data[i][0] = ""+query.list_result.get(i).MaSP;
+					data[i][1] = ""+query.list_result.get(i).TenSP;
+					data[i][2] = ""+query.list_result.get(i).SoLuongTon;
+					data[i][3] = ""+query.list_result.get(i).MoTa;
+					data[i][4] = ""+query.list_result.get(i).Gia;
+					
+					
+				}
+				
+				DefaultTableModel model = new DefaultTableModel(data, title);
+				table_sp.setModel(model);
+			}
 		}
 		else {
 			this.SoTrang = query.list_sp.size() / 20;
