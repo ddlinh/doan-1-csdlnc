@@ -66,7 +66,7 @@ public class ConnectionDB {
 		// TODO Auto-generated method stub
 		Statement stm = null;
 		try {
-			if(ConnectionDB.connect_()) {
+			if(ConnectionDB.connect()) {
 				String sql = "SELECT * FROM SanPham WHERE MaSP >= 1 AND MaSP <= 50";
 				stm = conn.createStatement();
 				ResultSet rs = stm.executeQuery(sql);
