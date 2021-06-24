@@ -21,7 +21,7 @@ public class APISanPham {
 		Statement stm = null;
 		list_sp.clear();
 		try {
-			if(ConnectionDB.connect()) {
+			if(ConnectionDB.connect_()) {
 				String sql = "SELECT * FROM SanPham";
 				stm = ConnectionDB.conn.createStatement();
 				ResultSet rs = stm.executeQuery(sql);

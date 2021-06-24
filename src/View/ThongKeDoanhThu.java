@@ -108,7 +108,7 @@ public class ThongKeDoanhThu extends JFrame {
 				
 		Statement stm = null;
 		ArrayList<String> years = new ArrayList<String>();
-		if(ConnectionDB.connect()) {
+		if(ConnectionDB.connect_()) {
 			String sql = "SELECT DISTINCT(YEAR(NgayLap)) AS YEAR FROM HoaDon";
 			try {
 				stm = ConnectionDB.conn.createStatement();
@@ -329,13 +329,16 @@ public class ThongKeDoanhThu extends JFrame {
 		contentPane.add(viewButton);
 		
 		JButton btnQuayLi = new JButton("Quay lại");
+		btnQuayLi.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnQuayLi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				contentPane.setVisible(false);
+				dispose();
+				DSHoaDon dshd = new DSHoaDon();
+				dshd.setVisible(true);
 			}
 		});
 		btnQuayLi.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btnQuayLi.setBackground(new Color(233, 150, 122));
+		btnQuayLi.setBackground(Color.CYAN);
 		btnQuayLi.setBounds(800, 125, 150, 40);
 		contentPane.add(btnQuayLi);
 			
