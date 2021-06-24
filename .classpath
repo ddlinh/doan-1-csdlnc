@@ -16,12 +16,12 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/CSDL_NC/DA#1/doan-1-csdlnc/doan-1-csdlnc/jfreechart-1.5.3.jar">
+	<classpathentry kind="lib" path="D:/CSDL_NC/DA#1/doan-1-csdlnc/18VP-CSDLNC-04_DA1/commons-lang-2.6.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/CSDL_NC/DA#1/doan-1-csdlnc/doan-1-csdlnc/commons-lang-2.6.jar">
+	<classpathentry kind="lib" path="D:/CSDL_NC/DA#1/doan-1-csdlnc/18VP-CSDLNC-04_DA1/jfreechart-1.5.3.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
